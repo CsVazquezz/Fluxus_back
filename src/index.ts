@@ -38,7 +38,7 @@ app.use("/api/v1/sound", soundRoute);
 //Ruta air
 
 app.use("/air", airRoute);
-app.use("sound", soundRoute);
+app.use("/sound", soundRoute);
 
 // Rutas de prueba
 app.use("/error", testRoutes);

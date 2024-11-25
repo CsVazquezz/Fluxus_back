@@ -9,13 +9,13 @@ export const findAllSoundReadings = async (
 ): Promise<PaginatedSoundReading> => {
   // Fetching the paginated data
   const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT * FROM SoundReadings LIMIT ? OFFSET ?",
+    "SELECT * FROM SoundLevels LIMIT ? OFFSET ?",
     [limit, offset],
   );
 
   // Query to get the total count of records
   const [totalRows] = (await pool.query(
-    "SELECT COUNT(*) as count FROM SoundReadings",
+    "SELECT COUNT(*) as count FROM SoundLevels",
   )) as [{ count: number }[], unknown];
 
   const total = totalRows[0].count;
@@ -39,7 +39,7 @@ export const insertSoundReading = async (
 ): Promise<SoundReading> => {
   const { sensor_id, timestamp, sound_level } = soundReading;
   const [result] = await pool.query<ResultSetHeader>(
-    `INSERT INTO SoundReadings (sensor_id, timestamp, sound_level) 
+    `INSERT INTO SoundLevels (sensor_id, timestamp, sound_level) 
      VALUES (?, ?, ?)`,
     [sensor_id, timestamp, sound_level],
   );
@@ -54,7 +54,7 @@ export const updateSoundReading = async (
 ): Promise<SoundReading> => {
   const { sensor_id, timestamp, sound_level } = soundReading;
   await pool.query<ResultSetHeader>(
-    `UPDATE SoundReadings
+    `UPDATE SoundLevels
      SET sensor_id = ?, 
          timestamp = ?, 
          sound_level = ?
@@ -67,7 +67,7 @@ export const updateSoundReading = async (
 
 // Delete a sound reading record
 export const deleteSoundReading = async (id: number): Promise<number> => {
-  await pool.query<ResultSetHeader>(`DELETE FROM SoundReadings WHERE id = ?`, [
+  await pool.query<ResultSetHeader>(`DELETE FROM SoundLevels WHERE id = ?`, [
     id,
   ]);
   return id;

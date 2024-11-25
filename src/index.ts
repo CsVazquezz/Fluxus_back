@@ -1,6 +1,7 @@
 import dotenvFlow from "dotenv-flow";
 import express from "express";
-import courseRouter from "./routes/airq";
+import airRoute from "./routes/airq";
+import soundRoute from "./routes/sound";
 import testRoutes from "./routes/test";
 import unknownResource from "./middlewares/uknown-resource";
 import unknownError from "./middlewares/uknown-error";
@@ -31,11 +32,13 @@ app.use(express.json());
 
 // Rutas de la api
 
-app.use("/api/v1/course", courseRouter);
+app.use("/api/v1/airquality", airRoute);
+app.use("/api/v1/sound", soundRoute);
 
-//Ruta student, teacher, courses
+//Ruta air
 
-app.use("/course", courseRouter);
+app.use("/air", airRoute);
+app.use("sound", soundRoute);
 
 // Rutas de prueba
 app.use("/error", testRoutes);

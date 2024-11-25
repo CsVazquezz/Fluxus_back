@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { deleteById, findAll, insert, update } from "../services/airq";
 import { AirQuality } from "../interfaces/airq";
 
-// Get all air quality readings
+// Obtener todas las lecturas de calidad del aire
 export const getAirQualityReadings = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -12,58 +12,62 @@ export const getAirQualityReadings = async (req: Request, res: Response) => {
     const readings = await findAll(limit, offset);
     res.status(200).json(readings);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving air quality readings", error });
+    res.status(500).json({
+      message: "Error al obtener las lecturas de calidad del aire",
+      error,
+    });
   }
 };
 
-// Create a new air quality reading
+// Crear una nueva lectura de calidad del aire
 export const createAirQualityReading = async (req: Request, res: Response) => {
   try {
     const reading: AirQuality = req.body;
     const newReading = await insert(reading);
 
-    // Emit event via WebSocket
+    // Emitir evento via WebSocket
     const io = req.app.get("io");
     io.emit("newAirQualityData", newReading);
     res
       .status(201)
-      .json({ message: "Air quality reading created successfully" });
+      .json({ message: "Lectura de calidad del aire creada exitosamente" });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Error creating air quality reading", error });
+    res.status(400).json({
+      message: "Error al crear la lectura de calidad del aire",
+      error,
+    });
   }
 };
 
-// Update an air quality reading
+// Actualizar una lectura de calidad del aire
 export const updateAirQualityReading = async (req: Request, res: Response) => {
   try {
     const id = Number.parseInt(req.params.id);
     const reading: AirQuality = req.body;
     await update(id, reading);
-    res
-      .status(201)
-      .json({ message: "Air quality reading updated successfully" });
+    res.status(201).json({
+      message: "Lectura de calidad del aire actualizada exitosamente",
+    });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Error updating air quality reading", error });
+    res.status(400).json({
+      message: "Error al actualizar la lectura de calidad del aire",
+      error,
+    });
   }
 };
 
-// Delete an air quality reading
+// Eliminar una lectura de calidad del aire
 export const deleteAirQualityReading = async (req: Request, res: Response) => {
   try {
     const id = Number.parseInt(req.params.id);
     await deleteById(id);
     res
       .status(201)
-      .json({ message: "Air quality reading deleted successfully" });
+      .json({ message: "Lectura de calidad del aire eliminada exitosamente" });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Error deleting air quality reading", error });
+    res.status(400).json({
+      message: "Error al eliminar la lectura de calidad del aire",
+      error,
+    });
   }
 };

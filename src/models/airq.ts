@@ -8,13 +8,13 @@ export const findAllAirQuality = async (
   offset: number,
 ): Promise<PaginatedAirQuality> => {
   const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT * FROM air_quality LIMIT ? OFFSET ?",
+    "SELECT * FROM AirQuality LIMIT ? OFFSET ?",
     [limit, offset],
   );
 
   // Query to get the total count of records
   const [totalRows] = (await pool.query(
-    "SELECT COUNT(*) as count FROM air_quality",
+    "SELECT COUNT(*) as count FROM AirQuality",
   )) as [{ count: number }[], unknown];
   const total = totalRows[0].count;
 
@@ -35,7 +35,7 @@ export const insertAirQuality = async (
 ): Promise<AirQuality> => {
   const { sensor_id, timestamp, air_quality_ppm, location } = airQuality;
   const [result] = await pool.query<ResultSetHeader>(
-    `INSERT INTO air_quality (sensor_id, timestamp, air_quality_index, location) 
+    `INSERT INTO AirQuality (sensor_id, timestamp, air_quality_ppm, location) 
      VALUES (?, ?, ?, ?)`,
     [sensor_id, timestamp, air_quality_ppm, location],
   );
@@ -50,10 +50,10 @@ export const updateAirQuality = async (
 ): Promise<AirQuality> => {
   const { sensor_id, timestamp, air_quality_ppm, location } = airQuality;
   await pool.query<ResultSetHeader>(
-    `UPDATE air_quality
+    `UPDATE AirQuality
      SET sensor_id = ?, 
          timestamp = ?, 
-         air_quality_index = ?, 
+         air_quality_ppm = ?, 
          location = ?
      WHERE id = ?;`,
     [sensor_id, timestamp, air_quality_ppm, location, id],
@@ -64,7 +64,7 @@ export const updateAirQuality = async (
 
 // Delete an air quality record
 export const deleteAirQuality = async (id: number): Promise<number> => {
-  await pool.query<ResultSetHeader>(`DELETE FROM air_quality WHERE id = ?`, [
+  await pool.query<ResultSetHeader>(`DELETE FROM AirQuality WHERE id = ?`, [
     id,
   ]);
   return id;

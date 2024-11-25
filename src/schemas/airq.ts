@@ -5,16 +5,16 @@ export const airQualitySchema = z.object({
     .number()
     .int()
     .positive({ message: "El ID del sensor debe ser un número positivo" }),
-  location: z.string().optional().min(3, {
+  location: z.string().min(3, {
     message: "La ubicación debe tener al menos 3 caracteres",
   }),
   air_quality_ppm: z
     .number()
     .positive({ message: "La calidad del aire debe ser un número positivo" }),
-  temperature: z
+  temp: z
     .number()
     .optional()
-    .refine((temp) => temp >= -50 && temp <= 50, {
-      message: "La temperatura debe estar entre -50 y 50 grados",
+    .refine((temp) => temp === undefined || (temp >= -50 && temp <= 50), {
+      message: "Temperature must be between -50 and 50",
     }),
 });

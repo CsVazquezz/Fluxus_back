@@ -32,7 +32,7 @@ app.use(express.json());
 
 // Rutas de la api
 
-app.use("/api/v1/airquality", airRoute);
+app.use("/api/v1/air_quality", airRoute);
 app.use("/api/v1/sound", soundRoute);
 
 //Ruta air

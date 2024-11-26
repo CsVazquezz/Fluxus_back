@@ -7,9 +7,15 @@ import {
 } from "../services/sound";
 
 export const getSoundReadings = async (req: Request, res: Response) => {
-  const { limit = 10, offset = 0 } = req.query;
+  const { limit = 10, offset = 0, sensor_id } = req.query;
+
   try {
-    const readings = await getAllSoundReadings(Number(limit), Number(offset));
+    // If sensor_id is provided, pass it to the service function
+    const readings = await getAllSoundReadings(
+      Number(limit),
+      Number(offset),
+      sensor_id ? Number(sensor_id) : undefined,
+    );
     res.json(readings);
   } catch (error) {
     res

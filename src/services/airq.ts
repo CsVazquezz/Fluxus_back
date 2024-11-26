@@ -1,28 +1,31 @@
-import { AirQuality } from "../interfaces/airq";
 import {
-  findAllAirQuality,
-  insertAirQuality,
-  updateAirQuality,
-  deleteAirQuality,
+  findAllAirQualityReadings,
+  insertAirQualityReading,
+  updateAirQualityReading,
+  deleteAirQualityReading,
 } from "../models/airq";
+import { AirQuality } from "../interfaces/airq";
 
-// Retrieve air quality records filtered by sensor_id, with pagination
-export const findAll = async (
-  sensorId: number,
+// Retrieve all air quality readings with optional filter by sensor_id
+export const getAllAirQualityReadings = async (
   limit: number,
   offset: number,
+  sensor_id?: number,
 ) => {
-  return await findAllAirQuality(sensorId, limit, offset);
+  return await findAllAirQualityReadings(limit, offset, sensor_id);
 };
 
-export const insert = async (airQuality: AirQuality) => {
-  return await insertAirQuality(airQuality);
+export const createAirQualityReading = async (reading: AirQuality) => {
+  return await insertAirQualityReading(reading);
 };
 
-export const update = async (id: number, airQuality: AirQuality) => {
-  return await updateAirQuality(id, airQuality);
+export const editAirQualityReading = async (
+  id: number,
+  reading: AirQuality,
+) => {
+  return await updateAirQualityReading(id, reading);
 };
 
-export const deleteById = async (id: number) => {
-  return await deleteAirQuality(id);
+export const removeAirQualityReading = async (id: number) => {
+  return await deleteAirQualityReading(id);
 };

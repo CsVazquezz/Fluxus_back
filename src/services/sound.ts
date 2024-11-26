@@ -6,8 +6,13 @@ import {
 } from "../models/sound";
 import { SoundReading } from "../interfaces/sound";
 
-export const getAllSoundReadings = async (limit: number, offset: number) => {
-  return await findAllSoundReadings(limit, offset);
+// Retrieve all sound readings with optional filter by sensor_id
+export const getAllSoundReadings = async (
+  limit: number,
+  offset: number,
+  sensor_id?: number,
+) => {
+  return await findAllSoundReadings(limit, offset, sensor_id);
 };
 
 export const createSoundReading = async (reading: SoundReading) => {

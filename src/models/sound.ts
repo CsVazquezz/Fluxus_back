@@ -2,20 +2,34 @@ import pool from "../db";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { SoundReading, PaginatedSoundReading } from "../interfaces/sound";
 
-// Retrieve all sound records with pagination
+// Retrieve all sound records with pagination and optional filter by sensor_id
 export const findAllSoundReadings = async (
   limit: number,
   offset: number,
+  sensor_id?: number,
 ): Promise<PaginatedSoundReading> => {
-  // Fetching the paginated data
-  const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT * FROM SoundLevels LIMIT ? OFFSET ?",
-    [limit, offset],
-  );
+  let query = "SELECT * FROM SoundLevels";
+  const params: (string | number)[] = [limit, offset];
 
-  // Query to get the total count of records
+  // If sensor_id is provided, add it to the query
+  if (sensor_id) {
+    query += " WHERE sensor_id = ?";
+    params.unshift(sensor_id);
+  }
+
+  query += " LIMIT ? OFFSET ?";
+
+  // Fetching the paginated data
+  const [rows] = await pool.query<RowDataPacket[]>(query, params);
+
+  // Query to get the total count of records (with optional sensor_id filter)
+  let countQuery = "SELECT COUNT(*) as count FROM SoundLevels";
+  if (sensor_id) {
+    countQuery += " WHERE sensor_id = ?";
+  }
   const [totalRows] = (await pool.query(
-    "SELECT COUNT(*) as count FROM SoundLevels",
+    countQuery,
+    sensor_id ? [sensor_id] : [],
   )) as [{ count: number }[], unknown];
 
   const total = totalRows[0].count;

@@ -2,30 +2,34 @@ import pool from "../db";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { PaginatedAirQuality, AirQuality } from "../interfaces/airq";
 
-// Retrieve all air quality records with pagination
+// Retrieve all air quality records with pagination and filter by sensor_id
 export const findAllAirQuality = async (
+  sensorId: number, // Added parameter for sensor_id
   limit: number,
   offset: number,
 ): Promise<PaginatedAirQuality> => {
+  // Modified query to filter by sensor_id
   const [rows] = await pool.query<RowDataPacket[]>(
-    "SELECT * FROM AirQuality LIMIT ? OFFSET ?",
-    [limit, offset],
+    "SELECT * FROM AirQuality WHERE sensor_id = ? LIMIT ? OFFSET ?",
+    [sensorId, limit, offset], // Pass sensor_id as a parameter
   );
 
-  // Query to get the total count of records
+  // Query to get the total count of records for the given sensor_id
   const [totalRows] = (await pool.query(
-    "SELECT COUNT(*) as count FROM AirQuality",
+    "SELECT COUNT(*) as count FROM AirQuality WHERE sensor_id = ?",
+    [sensorId], // Pass sensor_id as a parameter
   )) as [{ count: number }[], unknown];
   const total = totalRows[0].count;
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(total / limit);
+
   return {
     page: offset / limit + 1,
     limit,
     total,
     totalPages,
-    data: rows as AirQuality[],
+    data: rows as AirQuality[], // Return the filtered data
   };
 };
 

@@ -6,9 +6,13 @@ import {
   deleteAirQuality,
 } from "../models/airq";
 
-// Retrieve all air quality records
-export const findAll = async (limit: number, offset: number) => {
-  return await findAllAirQuality(limit, offset);
+// Retrieve air quality records filtered by sensor_id, with pagination
+export const findAll = async (
+  sensorId: number,
+  limit: number,
+  offset: number,
+) => {
+  return await findAllAirQuality(sensorId, limit, offset);
 };
 
 export const insert = async (airQuality: AirQuality) => {

@@ -5,18 +5,11 @@ export const soundSchema = z.object({
     .number()
     .int()
     .positive({ message: "El ID del sensor debe ser un número positivo" }),
+  location: z
+    .string()
+    .min(3, { message: "La ubicación debe tener al menos 3 caracteres" }),
   sound_level: z
     .number()
     .positive({ message: "El nivel de sonido debe ser un número positivo" }),
-  timestamp: z
-    .string()
-    .optional()
-    .refine(
-      (val) =>
-        !val ||
-        /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/.test(val),
-      {
-        message: "El formato de la fecha debe ser 'YYYY-MM-DDTHH:MM:SSZ'",
-      },
-    ),
+  timestamp: z.string().optional(),
 });

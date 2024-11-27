@@ -17,4 +17,5 @@ export const airQualitySchema = z.object({
     .refine((temp) => temp === undefined || (temp >= -50 && temp <= 50), {
       message: "Temperature must be between -50 and 50",
     }),
+  timestamp: z.string().optional(),
 });

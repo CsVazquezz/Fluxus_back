@@ -10,6 +10,7 @@ export const getAirQualityReadings = async (req: Request, res: Response) => {
   const { limit = 10, offset = 0, sensor_id } = req.query;
 
   try {
+    //Sensor id should be provided to fass it to function
     const readings = await getAllAirQualityReadings(
       Number(limit),
       Number(offset),

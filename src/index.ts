@@ -10,8 +10,7 @@ import http from "http";
 import { Server as SocketIOServer } from "socket.io";
 import cors from "cors";
 
-//Para poder acceder a las variables del ambiente
-// Cargar dotenv-flow solo si no estamos en producción
+//Upload dotenvFlow
 if (process.env.NODE_ENV !== "production") {
   dotenvFlow.config();
 }
@@ -25,22 +24,22 @@ const io = new SocketIOServer(server, {
   },
 });
 
-// Middleware para CORS - Permite todas las solicitudes
+// Middleware for CORS - to get all requests
 app.use(cors());
-// Middleware para parsear JSON
+// Middleware for JSON
 app.use(express.json());
 
-// Rutas de la api
+// Routes from the API
 
 app.use("/api/v1/air_quality", airRoute);
 app.use("/api/v1/sound", soundRoute);
 
-//Ruta air
+//routes
 
 app.use("/air", airRoute);
 app.use("/sound", soundRoute);
 
-// Rutas de prueba
+// routes
 app.use("/error", testRoutes);
 
 // WebSocket Connection

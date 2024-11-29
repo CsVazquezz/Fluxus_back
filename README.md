@@ -23,7 +23,7 @@ Data is collected via an ESP32, processed with **Express.js** and **TypeScript**
 ### Steps
 1. **Clone the Repository**:  
    ```bash
-   git clone https://github.com/CsVazquezz/Project_IOT_S.git
+   git clone https://github.com/CsVazquezz/Fluxus_back.git
    ```
 2. **Navigate to the Project Folder**:  
    ```bash
